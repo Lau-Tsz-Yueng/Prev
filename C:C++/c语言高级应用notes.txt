@@ -1,0 +1,328 @@
+《高级应用\C\》
+
+--------------------------------------------------------------------------------------------------
+十六.堆管理(heap)
+% stack = 栈(zhan)
+
+include <stdlib.h>
+% malloc \ free \ calloc \ realloc
+
+1.malloc
+分配内存空间
+必须使用memset来初始化空间(清零)
+
+2.free
+释放内存空间
+如果是使用malloc函数那么就需要来手动释放空间(free)
+
+3.calloc
+与malloc函数性质相似
+数组
+
+4.realloc
+可以实现内存分配和内存释放的功能
+分配:
+realloc(NULL, n) === malloc(n)
+释放:
+realloc(p, 0) === free(p)
+
+--------------------------------------------------------------------------------------------------
+十七.位运算操作符
+对内存直接进行操作
+位运算:对数据的二进制位进行处理的运算
+补码；
+位运算操作符:(6):
+
+取反操作符:~(not)
+00001111 --> 1111000
+
+位或操作符:|(or)
+00100111 | 00001111 = 00101111
+
+位与操作符:&(and)
+00000000 & 11111111 = 00000000
+
+异或操作符:^(xor)
+1 ^ 0 = 1
+0 ^ 1 = 1
+0 ^ 0 = 0
+1 ^ 1 = 0
+
+位移操作符:>> and <<(shift)
+
+1.右移操作符:>>
+int a = 39;
+a = a >> 2;
+00100111 --> 00001001:11
+
+2.左移操作符:<<
+int a = 39;
+a = a << 2;
+00100111 --> 00:10011100
+
+位运算赋值操作符：
+|=, &=, ^=, >>=, <<=
+(a &= b) ==== (a = a & b)
+
+案例:
+[子网掩码:]
+
+--------------------------------------------------------------------------------------------------
+十八.结构体
+struct 处理多个单一数据组成的数据集合
+
+定义结构体变量:
+#建议
+typedef struct 名称{
+	char name[];
+	int age;
+	char gender;
+	...
+}名称;
+or
+struct {
+	...
+}名称;
+
+访问结构体成员:
+成员操作符(.)
+
+typedef struct _per_infor{
+  char name[SIZE];
+  int age;
+  char gender;
+} per_infor;
+
+初始化:
+per_infor raul = {"Raul Wang", 25, 'M'};
+or
+per_infor raul = {0};
+结构体数组...
+结构体指针
+
+typedef struct _mytype_t{
+  int a;
+  int * b;
+} mytype_t;
+  
+int main(void)
+{
+  int x = 2;
+  mytype_t v = {3, &x};
+  mytype_t * p = &v;
+  printf("*(v.b) = %d\n", *(v.b));
+  printf("(*p).a = %d\n", (*p).a);
+  printf("*v.b = %d\n", *v.b);
+
+  return 0;
+}
+指向堆空间的结构体指针
+typedef struct _per_infor{
+  char name[SIZE_NAME];
+  int age;
+  char gender;
+} per_infor_t;
+  
+int main(void)
+{
+  per_infor_t * p = NULL;
+  p = (per_infor_t *) malloc(sizeof(per_infor_t));
+
+  if (NULL == p){
+    printf("Error in malloc().\n");
+    return -1;
+  }
+
+  printf("Please input the information:\n");
+  gets(p->name);
+  scanf("%d %c", &p->age, &p->gender);
+
+  printf("name\t = %s\n", p->name);
+  printf("age\t = %d\n", p->age);
+  printf("gender\t = %c\n", p->gender);
+
+  return 0;
+}
+指向结构体数组元素的指针
+typedef struct _per_infor{
+  char name[SIZE_NAME];
+  int age;
+  char gender;
+} per_infor_t;
+  
+int main(void)
+{
+  per_infor_t stu[SIZE_STU] = {
+    {"raul", 25, 'M'},
+    {"joel", 29, 'F'},
+    {"philip", 22, 'M'},
+    {"alan", 28, 'M'}
+};
+  per_infor_t * p = stu;
+  while (p < stu + SIZE_STU)
+    printf("%s\n", (p++)->name);
+
+  return 0;
+}
+
+
+---------------------------------------------------------------------------------------------------
+十九.共用体 枚举 位域
+三种高级数据类型:
+共用体(union):
+共用体共享同一块内存，不可使用指针，赋值不推荐。
+typedef union _data{
+	char a;
+	short b;
+	...
+}data;
+
+枚举(enumeration):
+const定义常量，这里的枚举类型也可以定义常量数值.
+
+enum 名字{
+	枚举成员1;
+	...
+}
+or
+
+enum color_t{
+	YELLOW, RED, BLUE, BLACK
+};
+or 
+typedef enum _colour_t{
+	YELLOW,
+	RED,
+	BLUE,
+	BLACK
+}colour_t;
+
+位域(Bitfield):(或者称为"位段"")
+
+某些任务需要处理的信息占用一个或者几个二进制位，一般的数据结构会占用额外的空间，并且增加处理时间。
+$ 位域属于结构体。
+
+struct bit_type{
+	unsigned a : 1;
+	unsigned b : 2;
+	unsigned c : 3;
+	unsigned d : 4; / 成员d占有4个字节 /
+}
+#位域的储存形式
+
+--------------------------------------------------------------------------------------------------
+二十.预处理
+宏
+'#'
+e.g
+#define SIZE 4
+定义宏函数:
+#define HELLO_WORLD \
+	printf("Hello,"); \
+	printf(" world!\n")
+
+替换字符串:
+#define STRING char *
+#define END }
+...
+(只是为了展示宏的强大作用但是不推荐使用)
+#define _D "%d "
+#define _F "%f "
+#define _X "%x "
+#define _LF "\n"
+$ 双引号里的宏名是不会被展开的
+
+说明形参属性:
+借助一个对象体为空的宏对象来辅助说明参数属性:
+#define IN
+#define OUT
+
+宏的作用域:
+#undef 命令可以有效的控制宏定义的作用范围
+
+宏函数与函数:
+e.g:
+#define INCREASE(x, y){\
+	++x; \
+	++y; \
+}
+
+条件编译:
+------------------------------------------------------------
+#ifdef 标识符
+	程序段 1
+#else
+	程序段 2
+#endif
+------------------------------------------------------------
+#define PRI_DEBUG(x, y, z){\
+	printf("x = %d, y = %d, z = %d\n", x, y, z);\
+
+}
+...
+#ifdef DEBUG
+	PRI_DEBUG(x, y, z);
+#endif
+...
+
+#ifndef 命令
+与#ifdef命令相反
+功能为:如果标识符未被宏定义
+
+#if 命令
+与if语句的结构十分相似
+为真——》通过程式
+$ 使用#if命令都可以实现#ifdef和#ifndef命令的功能
+
+define 宏函数
+e.g:
+#ifdef AAA === #if defined AAA
+#ifndef BBB === #if !defined BBB
+
+文件包含
+#include 命令:
+
+#include <文件名.h>
+#include "文件名.h"
+
+文件允许多次包含和嵌套包含，会引起死循环.
+
+---------------------------------------------------------------------------------------------------
+
+Application:
+
+二十一.图书管理系统开发实例
+
+需求分析:
+1.提供友好的用户交互界面;
+2.提供书籍的增加，删除，查询，批量删除等操作；
+3.提供历史日志以记录操作信息；
+
+系统设计:
+1.main模块  main.c
+2.用户界面模块  menu.h menu.c
+3.数据管理模块  data_manage.h data_manage.c
+4.历史日志模块  log.h log.c
+5.全剧配置模块  utility.h utility.c
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

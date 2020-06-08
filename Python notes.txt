@@ -1,0 +1,1099 @@
+Python notes:
+进阶提高:　　　　　　　　　
+
+一.python正则表达式(Regular expression)
+行定位:
+^:匹配行的开始
+&:匹配行的结尾
+
+元字符:
+\bmr\w*\b
+\w:匹配字母或者数字
+\s:空白符
+\d:数字
+\b:单词的开始或结束
+.:除了换行符以外的任意字符
+\w*:匹配任意数量的字母或者数字
+e.g: ^\d{8}& = 8 numbers
+
+限定符:
+?:colou?r = colour or color
++:go+gle = google
+*:go*gle = gooooooo..gle
+{n}:go{2}gle = google
+{n,}:go{2,}gle = google to gooo...gle
+{n,m}:employe{0,2} = employ, employe, employee
+
+字符类:
+[0-9] = \d
+[a-z0-9A-Z_] = \w
+
+排除字符:
+^
+
+选择字符:
+|
+
+转义字符:
+\
+
+
+import re:提供(search(),match(),findall())
+pattern = r'xxxxx'
+
+1.match:
+re.match(pattern, string, [flags])
+match = re.match(pattern, string, re.I)
+print(match)
+print(match.start())
+print(match.end())
+print(match.span())
+print(match.string)
+print(match.group())
+
+2.search():
+re.search(pattern, string, [flags])
+
+3.findall():
+re.findall(pattern, string, [flags])
+
+4.sub()(替换)
+re.sub(pattern, repel, string, count, [flags])
+
+5.split()
+re.split(pattern, string, [maxsplit], [flags])
+
+二.CLASS
+1.__foo__() 约等于 __init__() 属于private访问
+
+
+2.属性：
+
+e.g: @property:
+/
+class Rect:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    @property
+    def area(self):
+        return self.width*self.height
+
+
+rect = Rect(800, 600)
+print("面积为: ", rect.area)
+/
+
+3.为属性增加安全保护机制:
+@show.setter:
+(让属性可修改)
+
+4.继承
+class Fruit():
+    color = "green"
+    def harvest(self, color):
+        print("Fruit: " + color + "!")
+        print("yes")      
+class Apple(Fruit):
+    color = "red"   
+    def __init__(self):
+        print("I am apple")       
+class Orange(Fruit):
+    color = "orange"
+    def __init__(self):
+        print("\n i am orange")
+apple = Apple()
+apple.harvest(apple.color)
+orange = Orange()
+orange.harvest(orange.color)
+
+5.派生类初始化:
+super().__init__()
+
+
+三.模块(Modulus):
+
+(1):
+1.自定义模块
+2.使用import导入模块
+import modulusname [as alias]
+import bmi as m
+as关键字用来调用模块中的变量，函数，类等等
+逗号:
+import bmi, tips, differenttree 全部导入.
+3.使用from...import语句
+from bmi import fun_bmi # 导入bmi模块的fun_bmi函数
+from bmi import * # 导入bmi模块的全部定义
+4.模块搜索目录
+import sys
+print(sys.path)
+临时添加:
+import sys
+sys.path.append('E:/program/Python/Code/demo')
+...
+5.python中的包
+
+(2):
+引用其他模块:
+1.导入和使用标准模块
+import random
+常用内置标准模块:
+sys
+time
+os
+calender
+urllib
+json
+re
+math
+decimal
+shutil
+logging
+tkinter
+2.第三方模块下载和安装:
+pip <command> [modulename]
+pip install numpy
+
+help('modulus')
+terminal >> pip list
+
+
+
+四.异常处理及程序调试:
+
+1.python常见异常(Error)
+NameError, IndexError, IndentationError, ValueError, KeyError, IOError, ImportError, AttributeError.
+
+2.异常处理语句:
+try...except
+
+try:
+    block1
+except[ExceptionName]:
+    block2
+
+使用try...except语句捕获异常，输出错误信息后，程序会继续执行。
+
+e.g.:
+def division():
+    print("\n===========分苹果了=========\n")
+    apple = int(input("number of apple: "))
+    children = int(input("number of child: "))
+    result = apple // children
+    remain = apple - result * children
+    if remain > 0:
+        print(apple, "apples, average divided into", children, "childs, everyone get", result, "apples, remains", remain)
+    else:
+        print(apple, "apples, average divided into", children, "childs, everyone get", result, "apples")
+
+try:
+    division()
+except ZeroDivisionError:
+    print("\n wrong! cannot be wholely divided! ")
+except ValueError as e:
+    print("输入错误: ", e)
+
+3.try...except..else:
+else:
+    print("分苹果顺利完成")
+
+4.try...except...finally:
+(finally:无论是否抛出异常都会执行的语句)
+finally:
+    print("进行了一次分苹果...")
+
+5.使用raise语句抛出异常:
+raise [ExceptionName[(reason)]]
+当前函数或者方法处理这个异常.则可以使用raise抛出异常.
+
+程序调试:
+1.使用自带的IDLE进行调试:
+我觉得使用IDLE进行程序调试是pycharm自带的?
+
+2.使用assert语句进行调试程序:
+assert expression[, reason]
+try:
+    division()
+except AssertionError as e:
+    print("\n 输入有误: ", e)
+
+
+五.文件及目录操作:
+1.基本文件操作:
+(1)创建和打开文件:
+file = open(filename[,mode[,buffering]])
+
+mode:
+r : 只读
+rb, r+ ... page 248
+
+buffering:
+可选参数:
+
+(2)以二进制形式打开文件
+file = open('picture.png','rb')
+print(file)
+
+(3)打开文件时指定编码方式:
+open()默认GBK编码
+file = open('notice.txt', 'r', encoding = 'utf-8')
+
+2.关闭文件
+file.close()
+
+3.打开文件使用with语句
+with expression as target:
+    with-body
+with open('message.txt', 'w') as file:
+    pass
+
+4.写入文件内容
+file.write(string)
+file = open('message.txt','w')
+file.write("xxxxx")
+file.close()
+#writelines()方法 实现不添加换行符
+
+5.读取文件
+file.read([size])
+size为可选参数, 如果省略则一次性读取所有内容
+with open('message.txt','r') as file:
+    string = file.read(9) #读取前九个字符
+    print(string)
+
+file.readline() #读取一行
+while open('message.txt','r') as file:
+    number = 0
+    while True:
+        number += 1
+        line = file.readline()
+        if line ==":
+            Break
+        print(number.line.end = "\n")
+print("\n", "="*39,"over", "="*39,"\n")
+
+读取全部行:
+file.readlines()
+
+2.目录操作:
+(1)os and os.path modulus:
+import os
+os.name = 当前系统
+os.linesep = 获取当前系统的换行符
+os.sep = 获取路径分隔符
+
+(2).路径:
+1.相对路径
+import os
+print(os.getcwd())
+
+2.绝对路径
+path = "Users/mac/Desktop/韩国语学习"
+os.path.abspath(path)
+
+3.拼接路径
+os.path.join(path1,path2)
+path1 = "xxxx", path2 = "xxxxx"
+
+(3).判断目录是否存在
+os.path.exist(path)
+返回True or False
+
+(4).创建目录
+创建一级目录
+os.mkdir(path, mode=0o777)
+
+e.g:
+import os
+path = "/Users/mac/Desktop/韩国语学习/skt"
+if not os.path.exists(path):
+    os.mkdir(path)
+    print("创建成功！")
+skt文件夹创建成功.
+
+创建多级目录
+os.makedirs(name, mode=0o777)
+e.g:
+os.makedirs("/Users/mac/Desktop/韩国语学习/skt/faker/bang")
+
+(5).删除目录
+os.rmdir(path)
+
+rmdir()只能删除空的目录
+如果要删除非空目录:
+使用shutil模块的rmtree()函数
+import shutil
+rmtree("xxxxxx")
+
+(6).遍历目录
+os.walk(top[, topdown][, onerror][, followlinks])
+e.g:
+import os
+tuples = os.walk("/Users/mac/Desktop/韩国语学习")
+for i in tuples:
+    print(i, "\n")
+
+3.高级文件操作:
+(1).删除文件
+os.remove(path)
+
+(2).重命名文件和目录
+os.rename(src,dst)
+e.g:
+import os
+src = "/Users/mac/Desktop/韩国语学习"
+dst = "/Users/mac/Desktop/韩国语学习资料"
+os.rename(src, dst)
+if os.path.exists(src):
+    os.rename(src, dst)
+    print("rename success!")
+else:
+    print("file not exists")
+
+(3).获取文件基本信息
+os.stat()
+e.g:
+import os
+path = ("/Users/mac/Desktop/韩国语学习资料/TOPIKCHUJI.pdf")
+fileinfo = os.stat(path)
+print("文件完整路径: ", os.path.abspath(path))
+print("索引号: ", fileinfo.st_ino)
+print("设备名: ", fileinfo.st_dev)
+print("文件大小:", fileinfo.st_size)
+print("最后一次访问时间: ", fileinfo.st_atime)
+print("最后一次修改时间: ", fileinfo.st_mtime)
+print("最后一次状态变化时间: ", fileinfo.st_ctime)
+
+
+六.操作数据库:
+数据库的种类,比如SQLite，MySQL，Oracle
+API:数据库接口
+
+(1).数据库编程接口
+
+(2).使用SQLite
+import sqlite3
+cone
+
+
+七.GUI界面编程
+Graphical User Interface
+安装wxPython:
+pip install -U wxPython
+
+创建应用程序
+1.创建一个wx.App的子类
+import wx
+class App(wx.App):
+    def OnInit(self):
+        frame = wx.Frame(parent = None, title = 'Hellow wyPython')
+        frame.Show()
+        return True
+if __name__ == '__main__':
+    app = App()
+    app.MainLoop()
+
+2.使用wx.Frame框架
+wx.App)):
+wx.Frame:
+e.g:
+import wx
+
+class MyFrame(wx.Frame):
+    def __init__(self, parent, id):
+        wx.Frame.__init__(self, parent, id, title = "创建 Frame", pos = (100, 100), size = (300, 300))
+
+if __name__ == '__main__':
+    app = wx.App()
+    frame = MyFrame(parent = None, id = -1)
+    frame.Show()
+    app.MainLoop()
+
+
+3.常用控件
+(1).StaticText
+
+wx.StaticText(parent, id, label, pos = wx.DefaultPosition, size = wx.DefaultSize, style = 0,
+     name = "staticText")
+
+wx.Font(pointSize, family, style, weight, underline=False, faceName="", encoding=wx.FONTENCODING_DEFAULT)
+设置字体
+
+import this
+e.g:
+import sys
+import wx
+
+
+class MyFrame(wx.Frame):
+    def __init__(self, parent, id):
+        wx.Frame.__init__(self, parent, id, title="创建 StaticText", pos=(100, 100), size=(600, 400))
+        panel = wx.Panel(self)
+        title = wx.StaticText(panel, label='Python --- SKT', pos=(100, 20))
+        font = wx.Font(16, wx.DEFAULT, wx.FONTSTYLE_NORMAL, wx.NORMAL)
+        title.SetFont(font)
+        wx.StaticText(panel, label='Beautiful is better than ugly.', pos=(50, 50))
+        wx.StaticText(panel, label='Explicit is better than implicit.', pos=(50, 70))
+        wx.StaticText(panel, label='Simple is better than complex.', pos=(50, 90))
+        wx.StaticText(panel, label='Complex is better than complicated.', pos=(50, 110))
+        wx.StaticText(panel, label='Flat is better than nested.', pos=(50, 130))
+        wx.StaticText(panel, label='Sparse is better than dense.', pos=(50, 150))
+        wx.StaticText(panel, label='Readability counts.', pos=(50, 170))
+        wx.StaticText(panel, label='Special cases are not special enough to break the rules.', pos=(50, 190))
+        wx.StaticText(panel, label='Although practicality beats purity.', pos=(50, 210))
+        wx.StaticText(panel, label='', pos=(50, 230))
+        wx.StaticText(panel, label='', pos=(50, 250))
+        wx.StaticText(panel, label='', pos=(50, 270))
+        
+
+if __name__ == '__main__':
+    app = wx.App()
+    frame = MyFrame(parent = None, id = -1)
+    frame.Show()
+    app.MainLoop()
+
+
+5.TextCtrl输入文本类
+wx.StaticText类 用于显示纯粹的静态文本
+TextCtrl用于需要输入文本与用户进行交互
+
+wx.TextCtrl(parent, id, value = "", pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator, name = wx.TextCtrlNameStr)
+
+其他参数 取值和说明: --> wx.TE_.... 
+import sys
+import wx
+
+
+class MyFrame(wx.Frame):
+    def __init__(self, parent, id):
+        wx.Frame.__init__(self, parent, id, title="创建 TextCtrl 类", size=(400, 300))
+        panel = wx.Panel(self)
+        self.title = wx.StaticText(panel, label="请输入用户名和密码", pos=(140, 20))
+        self.label_user = wx.StaticText(panel, label="用户名:", pos=(50, 50))
+        self.text_user = wx.TextCtrl(panel, pos=(100, 50), size=(235, 25), style=wx.TE_LEFT)
+        self.label_pwd = wx.StaticText(panel, pos=(50, 90), label="密   码:")
+        self.text_password = wx.TextCtrl(panel, pos=(100, 90), size=(235, 25), style=wx.TE_PASSWORD)
+
+
+if __name__ == '__main__':
+    app = wx.App()
+    frame = MyFrame(parent=None, id=-1)
+    frame.Show()
+    app.MainLoop()
+
+
+6.Button按钮类
+按钮是GUI中使用最广泛的控件,用于捕获用户生成的单机事件,触发绑定到一个处理函数
+wx.Button(parent, id, label, pos, size=wxDefaultSize, style=0, validator, name="button")
+
+import wx
+
+
+class MyFrame(wx.Frame):
+    def __init__(self, parent, id):
+        wx.Frame.__init__(self, parent, id, title="创建 TextCtrl 类", size=(400, 300))
+        panel = wx.Panel(self)
+        self.title = wx.StaticText(panel, label="请输入用户名和密码", pos=(140, 20))
+        self.label_user = wx.StaticText(panel, label="用户名:", pos=(50, 50))
+        self.text_user = wx.TextCtrl(panel, pos=(100, 50), size=(235, 25), style=wx.TE_LEFT)
+        self.label_pwd = wx.StaticText(panel, pos=(50, 90), label="密   码:")
+        self.text_password = wx.TextCtrl(panel, pos=(100, 90), size=(235, 25), style=wx.TE_PASSWORD)
+        self.bt_confirm = wx.Button(panel, label='确定', pos=(105, 130))
+        self.bt_cancel = wx.Button(panel, label='取消', pos=(195, 130))
+
+
+if __name__ == '__main__':
+    app = wx.App()
+    frame = MyFrame(parent=None, id=-1)
+    frame.Show()
+    app.MainLoop()
+
+
+BoxSizer 布局
+在此前这些控件通过pos参数布置在pannel画板上面，虽然这种方式很容易理解但是过程很麻烦。
+不美观。
+智能布局方式--sizer
+wxPython提供了5种Sizer:
+BoxSizer, GridSizer, FlexGridSizer, GridBagSizer, StaticBoxSizer
+
+1.使用BoxSizer布局
+Box.Add(control, proportion, flag, border)
+control:要添加的控件
+proportion:
+flag: flag参数和border参数结合使用
+使用操作符"|"实现联合使用
+:wx.ALIGN_...
+
+事件处理
+event
+1.绑定事件
+bt_confirm.Bind(wx.EVT_BUTTON, OnclickSubmit)
+
+wx.EVT_...都是用来处理事件的
+比如wx.ENTER_WINDOW and wx.LEAVE_WINDOW 当鼠标进入或者离开一个窗口控件:
+
+import wx
+
+
+class MyFrame(wx.Frame):
+    def __init__(self, parent, id):
+        wx.Frame.__init__(self, parent, id, title="用户登录", size=(400, 300))
+        panel = wx.Panel(self)
+
+        self.bt_confirm = wx.Button(panel, label='确定')
+        self.bt_confirm.Bind(wx.EVT_BUTTON, self.OnclickSubmit)
+        self.bt_cancel = wx.Button(panel, label='取消')
+        self.bt_cancel.Bind(wx.EVT_BUTTON, self.OnclickCancel)
+
+
+    def OnclickSubmit(self, event):
+        message = "skt"
+        username = self.text_user.GetValue()
+        password = self.text_password.GetValue()
+        if username == "" or password == "":
+           message = '用户名或者密码不能为空'
+        elif ussername == 'mr' and password == 'mrsoft':
+           message = '登录成功'
+        else:
+           message = '用户名和密码不匹配'
+        wx.MessageBox(message)
+
+
+    def OnclickCancel(self, event):
+        self.text_user.SetValue()
+        self.text_password.SetValue()
+
+
+if __name__ == '__main__':
+    app = wx.App()
+    frame = MyFrame(parent=None, id=-1)
+    frame.Show()
+    app.MainLoop()
+
+八,网络爬虫技术开发
+网络爬虫 网络蜘蛛 网络机器人 网页追逐者:
+爬取收集整理互联网的网页图片视频等信息
+
+1.通用网络爬虫
+Scalable Web Crawler
+2.聚焦网络爬虫
+Focused Crawler or Topical Crawler
+目标网页定位在与主题相关的页面中
+3.增量式网络爬虫
+Incremental Web Crawler
+增量式更新指的是在更新的时候更新改变的地方 未改变的地方则不更新 所以只会爬去发生变化的页面
+4.深层网络爬虫
+Web页面分为Surface Web 和 Deep Web
+Surface Web 指的是不需要提交表单 使用静态的超链接就可以直接访问的静态页面
+深层网页指的是那些大部分内容不能通过静态链接获取的 隐藏在搜索表单后面的 需要用户提交一些关键词才能获得的web页面 
+深层网络 = 几百倍x表层网络
+
+网络爬虫的基本原理
+网络爬虫的基本技术：
+
+1.python的网络请求
+URL地址 和 下载地址
+HTTP:网络请求的三种方式:(urllib, urllib3, requests)
+
+(1).urllib模块
+urlopen()
+urllib的子模块:
+
+urllib.request
+urllib.error
+urllib.parse
+urllib.robotparser
+
+import urllib.request
+response = urllib.request.urlopen('http://www.baidu.com')
+html = response.read()
+print(html)
+
+01 import urllib.parse
+02 import urllib.request
+
+import urllib.request
+data = bytes(urllib.parse.urlencode({'word':'hello'}), encoding = 'utf8')
+response = urllib.request.urlopen('http://httpbin.org/post', data=data)
+html = response.read()
+print(html)
+
+这里通过http://httpbin.org/post网站进行演示 作为练习使用urllib的站点
+
+(2).urllib3模块
+
+import urllib3
+http = urllib3.PoolManager()
+response = http.request('GET', 'http://www.baidu.com/')
+print(response.data)
+
+response = http.request('POST','http://httpbin.org/post', fields = {'word':'hello'})
+post发送请求
+
+(3)requests模块
+pip install requests
+
+response = requests.get('http://www.baidu.com')
+print(response.status_code)
+print(response.url)...
+
+import requests
+data = {'word':'hello'}
+response = requests.post('http://httpbin.org/post', data = data)
+print(response.content)
+以字节流形式打印网页源码
+
+网络请求方式：
+PUT, DELETE, HEAD, OPTIONS
+payload = {'key1':'value1','key2':'value2'}
+response = requests.get('http://httpbin.org/get', params = payload)
+print(response.content)
+
+2.请求headers处理
+有时候无论通过GET还是POST以及其他请求方式都会出现403错误。因为反爬虫设置的问题
+通过模拟浏览器的头部信息来进行访问
+(1)打开对应的网页信息
+x(快捷键Ctrl + Shift + E 打开网络监视器)
+v(mac Chrome右键单击打开检查 network-->doc-->选定一个绿色的线就能copy requests header or
+双击name也能查看response header或者requests header
+
+import requests
+url = 'http://www.baidu.com/'
+headers = {'User-Agentxxxx'}
+response = requests.get(url, headers=headers)
+print(response.content)
+
+3.网络超时
+网页长时间未响应
+import requests
+for a in range(0, 50):
+    try:
+        response = requests.get('http://www.baidu.com/', timeout=0.5)
+        print(response.status_code)
+    except Exception as e:
+        print('异常' + str(e))
+
+三种常见的网络异常种类:
+import requests
+from requests.exceptions import ReadTimeout, HTTPError, RequestException
+for a in range(0, 50):
+    try:
+        response = requests.get('http://www.baidu.com/', timeout=0.5)
+        print(response.status_code)
+    except Exception as e:
+        print('异常' + str(e))
+    except ReadTimeout:
+        print('timeout')
+    except HTTPError:
+        print('httperror')
+    except RequestException:
+        print('reqerror')
+
+4.代理服务
+在爬取网页的过程中，经常会发现可以爬取的网页现在无法爬取了，这是因为你的IP被爬取网站的服务器屏蔽了。
+代理服务可以解决这一麻烦，设置代理时，首先需要找到代理地址 对应的端口号为xxx 完整格式为 (代理地址:端口号)
+import requests
+proxy = {'http':'122.114.31.177:808', 'https':'122.114.31.177:8080'}
+response = requests.get('http://www.mingrisoft.com/', proxies=proxy)
+print(response.content)
+
+5.HTML 解析之 BeautifulSoup
+
+(1).BeautifulSoup的安装
+pip install bs4
+pip install beautifulsoup4
+
+from bs4 import BeautifulSoup
+
+html_doc = """
+<html><head><title>The Dormouse's story</title></head>
+<body>
+<p class = xxxx
+"""
+soup = BeautifulSoup(html_doc, features="lxml")
+print(soup)         #打印解析的HTML代码
+
+6.网络爬虫开发常用框架
+1.Scrapy爬虫框架
+http://scrapy.org
+2.Crawley爬虫框架
+http://project.crawley-cloud.com
+3.PySpider爬虫框架
+http://github.com/binux/pyspider/releases
+
+7.实战项目:
+1.搭建QT环境
+http://www.qt.io/download
+！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+
+九,使用进程和线程
+
+十,网络编程
+1.网络基础
+为了实现不同计算机之间的通信
+
+通信协议
+联网必须规定通信协议
+互联网协议簇(Internet Protocol Suite)
+Internet = Inter + net
+任何私有网络支持这个协议 就可以联入互联网
+
+1.TCP/IP简介
+IP协议
+通信时 双方必须知道对方的标识 好比发送快递要知道对方的地址
+互联网上每个计算机的唯一标识就是IP地址
+IP地址就是一个32位整数
+
+TCP协议
+TCP协议是建立在IP协议之上的。
+TCP协议会通过三次握手建立可靠连接
+对每个IP包编号 确保对方按顺序收到 如果掉包 自动重发
+TCP报文包括要传输的数据外 包含源IP地址 和 目标IP地址
+TCP报文来了之后 需要端口号来区分
+
+2.UDP简介
+UDP协议时面向无连接的协议。
+不需要建立连接 只需要对方的IP地址和端口号 就可以发送数据包
+数据包不保证一定到达
+数据不可靠 但是优点是比TCP协议快
+
+3.Socket简介
+为了使两个程序之间通过网络进行通信， 二者必须均使用Socket套接字
+Socket = 英文多孔插座
+
+s = socket.socket(AddressFamily, Type)
+AddressFamily --> 常用AF_INET 用于Internet进程间通信
+Type --> SOCK_STREAM = TCP协议
+     --> SOCK_DGRAM = UDP协议
+
+socket对象的主要方法:
+s.bind(), s.listen(), s.......
+
+4.TCP编程
+(1).创建TCP服务器
+由于TCP连接具有安全可靠的特性，TCP应用广泛
+主动发起连接的叫 客户端
+被动响应连接的叫 服务器
+
+本机IP: 61.140.206.152
+端口号: cmd netstat 
+
+5.UDP
+V
+
+
+十一, Web基础
+1.HTTP协议
+e.g.:
+用户浏览器被称为客户端
+网路学习网站被称为服务器
+HTTP: HyperText Transfer Protocol
+超文本传输协议
+利用TCP在两台计算机之间传输信息的协议
+
+2.Web服务器
+浏览器输入URL
+请求DNS服务器
+发送HTTP response
+
+3.前端基础
+web开发
+
+通常分为front-end 前端和后端开发
+后端的编程语言:python, java, PHP, ASP.NET
+前端语言: HTML, CSS, JavaScript
+1. HTML
+描述网页的一种语言:
+hypertext markup language
+标记语言 并不是编程语言
+通常成对出现: <HTML>
+HTML5 最新HTML版本:
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset = "utf-8">
+</head>
+<body>
+
+<h1>first title</h1>
+<p>my first paragraph</p>
+
+</body>
+</html>
+
+2.CSS简介
+Cascading Style Sheets(层叠样式表)
+标记语言
+为html文档定义布局
+设计字体颜色边距高度宽度背景图像高级定位.
+
+3.JavaScript
+描述网页的行为
+
+静态服务器
+<!DOCTYPE html>
+<html lang = "UTF-8">
+<head>
+<title>
+    SuperNova Technology
+</title>
+</head>
+    <body class ="bs-docs-home">
+    <!-- Docs master nav -->
+    <header class="navbar navbar-static-top bs-docs-nav" id="top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="/" class="navbar-brand">mingrisoft</a>
+        </div>
+        <nav id="bs-navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="http://www.mingrisoft.com/selfCourse.html">course</a>
+                </li>
+                <li>
+                    <a href="http://mingrisoft.com/book.html">read</a>
+                </li>
+                <li>
+                    <a href="http://mingrisoft.com/bbs.html">community</a>
+                </li>
+                <li>
+                    <a href="http://mingrisoft.com/servicecenter.html">service</a>
+                </li>
+                <li>
+                    <a href="/contact.html">contactus</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+        <!-- Page content of course!-->
+        <main class="bs-docs-masthead" id="content" tabindex="-1">
+    <div class="container">
+        <span class="bs-docs-booticon bs-docs-booticon-lg bs-docs-booticon-outline">MR</span>
+        <p class="lead">xxxxxxxxxxxxx.</p>
+        <p class="lead">
+            <a href="/contact/html" class="btn btn-outline-inverse btn-lg">contactus</a>
+        </p>
+    </div>
+</main>
+</body>
+</html>
+
+
+
+WSGI接口
+
+CGI动态界面
+网卡接口: Common Gateway Interface
+
+WSGI
+Web Server Gateway Interface
+服务器网卡接口
+
+定义WSGI接口
+
+def applicationb(environ, start_response):
+    start_response('200 OK', [('Content-Type', 'text/html')])
+    return [b'<h1> Hello, World!</h1>']
+
+运行WSGI服务
+wsgiref模块
+！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+
+
+Web框架
+管理路由
+管理会话和cookies
+创建模版来显示html
+代码的重用reused
+
+Python中常用的框架:
+WSGI
+只要遵循WSGI规则就可以自主开发WEB框架
+开源框架几百个
+主流python的web框架:
+1.Django 最屌的
+2.Flask 轻量级web应用框架 容易
+3.Bottle
+4.Tornado
+
+十二, FLASK 框架
+
+1.安装虚拟环境
+pip install virtualenv
+安装
+
+创建模拟环境
+virtualenvvenv:
+virtualenv test_env01(环境名称，文件夹名称)
+
+激活虚拟环境
+activate 路径
+source bin/activate
+
+2.安装Flask
+pip install flask
+pip list --format columns
+
+
+第一个flask程序
+
+from flask import Flask
+app = Flask(__name__)
+
+
+@app.route('/')
+def hello_world():
+    return 'Hello World!'
+
+
+if __name__ == '__main__':
+    app.run()
+
+3.flask基础
+开启调试模式
+app.debug = True
+app.run
+
+另外一种:
+app.run(debug=True)
+
+路由：
+@app.route('/')
+def index():
+    return '<h1>Hello World!</h1>'
+
+变量规则:
+
+from flask import Flask
+app = Flask(__name__)
+
+
+@app.route('/user/<username>')
+def show_user_profile(username):
+    return 'User %s'% username
+
+
+@app.route('/post/<int:post_id>')
+def show_post(post_id):
+    return 'Post %d' % post_id
+
+
+def hello_world():
+    return 'Hello World!'
+
+
+if __name__ == '__main__':
+    app.run()
+
+构造URL：
+
+HTTP方法:
+
+
+web表单：
+pip install flask-wtf
+
+
+CSRF 保护和验证:
+e.g:
+
+from flask import Flask, render_template
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'mrsoft'
+
+
+class LoginForm(FlaskForm):
+    name = StringField(label='Username', validators=[DataRequired("User name cannot be empty!")])
+    password = PasswordField(label='password', validators=[DataRequired("Password cannot be empty!")])
+    submit = SubmitField(label='Submit')
+
+
+#@app.route('/')
+#def hello_world():
+#    return render_template('index.html')
+
+
+#@app.route('/user/<username>')
+#def show_user_profile(username):
+#    return render_template('user.html', name=username)
+
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    form = LoginForm()
+    data = {}
+    if form.validate_on_submit():
+        data['name'] = form.name.data
+        data['password'] = form.password.data
+    return render_template('index.html', form=form, data=data)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+十三, 操作数据库:
+SQLite and MySQL
+下载oracle和MySQL
+1.获取数据连接对象
+cconnect()
+conn = 
+
+
+
+
+
+
+
+
+十三, 项目开发: e起去旅行 :D
+
+
+Scrapy 爬虫框架结构
+
+5+2 结构 
+
+Scheduler --> engine --> downloader or spiders or item pipelines
+
+
+
+
+Leetcode
+https://leetcode-cn.com/problemset/all/
+
+https://www.zhihu.com/question/265662120
+有哪些 python 的在线练习题或编程挑战的网站？
+127 人赞同了该回答
+from reddit/python: Python • r/Python ，打开看右侧列表。
+
+Online exercises:
+
+coding bat
+pyschools
+codecademy
+Problem solving with algorithms and data structures
+how to think like a computer scientist
+code school: try python
+python online tutorial | code school
+
+Programming challenges:
+
+The python challenge
+CheckiO
+Project euler
+Codeeval
+/r/dailyprogrammer
+
+字符串的截取:
+str = '0123445677'
+print(str[0:3]) 从第一位到第三位的字符
+
+
+
+127.0.0.1

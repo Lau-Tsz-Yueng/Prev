@@ -1,0 +1,125 @@
+https://blog.csdn.net/DerrickRose25/article/details/86664069
+
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'mainwindow.ui'
+#
+# Created by: PyQt5 UI code generator 5.13.0
+#
+# WARNING! All changes made in this file will be lost!
+
+import PyQt5
+import sys
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+
+def show_MainWindow():
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
+
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(590, 360)
+        MainWindow.setMinimumSize(QtCore.QSize(12, 12))
+        self.centralWidget = QtWidgets.QWidget(MainWindow)
+        self.centralWidget.setObjectName("centralWidget")
+        MainWindow.setCentralWidget(self.centralWidget)
+        self.menuBar = QtWidgets.QMenuBar(MainWindow)
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 590, 22))
+        self.menuBar.setObjectName("menuBar")
+        MainWindow.setMenuBar(self.menuBar)
+        self.mainToolBar = QtWidgets.QToolBar(MainWindow)
+        self.mainToolBar.setObjectName("mainToolBar")
+        MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.mainToolBar)
+        self.statusBar = QtWidgets.QStatusBar(MainWindow)
+        self.statusBar.setObjectName("statusBar")
+        MainWindow.setStatusBar(self.statusBar)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+###############################
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(960, 786)
+        MainWindow.setMinimumSize(QtCore.QSize(960, 786))
+        # MainWindow.setMaximumSize
+        self.centralWidget = QtWidgets.QWidget(MainWindow)
+        self.centralWidget.setObjectName("centralwidget")
+
+        from PyQt5.QtGui import QPalette, QPixmap, QColor
+#  通过label控件显示顶部图片
+        self.label_title_img = QtWidgets.QLabel(self.centralWidget)
+        self.label_title_img.setGeometry(QtCore.QRect(0, 0, 960, 141))
+        self.label_title_img.setObjectName("label_title_img")
+#
+        title_img = QPixmap('img/bg1.png')
+        self.label_title_img.setPixmap(title_img)
+
+#  查询部分的widget
+        self.widget_query = QtWidgets.QWidget(self.centralwidget)
+        self.widget_query.setGeometry(QtCore.QRect(0, 141, 960, 80))
+        self.widget_query.setObjectName("widget_query")
+        self.widget_query.setAutoFillBackground(True)
+        palette = QPalette()
+        palette.setBrush(QPalette.Background, QtGui.QBrush(QtGui.QPixmap('imag/bg2.png')))
+        self.widget_query.setPalette(palette)
+
+#
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+
+#
+#        MainWindow.setWindowTitle("MainWindow", "车票查询")
+#        self.checkBox_T.setText(_translate("MainWindow", "T-特快"))
+#        self.checkBox_K.setText(_translate("MainWindow", "K-快速"))
+#        self.checkBox_Z.setText(_translate("MainWindow", "Z-直达"))
+#        self.checkBox_D.setText(_translate("MainWindow", "D-动车"))
+#        self.checkBox_G.setText(_translate("MainWindow", "GC-高铁"))
+#        self.label_type.setText(_translate("MainWindow", "车次类型: "))
+#        self.label.setText(_translate("MainWindow", "出发地: "))
+#        self.label_3.setText(_translate("MainWindow", "目的地: "))
+#        self.label_4.setText(_translate("MainWindow", "出发日: "))
+#        self.pushButton.setText(_translate("MainWindow", "查询"))
+
+#
+
+
+if __name__ == "__main__":
+    show_MainWindow()
+
+
+
+
+
+import requests
+from lxml import html
+url='https://www.baidu.com/' #需要爬的网址
+page=requests.Session().get(url) 
+tree=html.fromstring(page.text) 
+result=tree.xpath('//tr//a/text()') #需要获取的数据
+result1=tree.xpath('//tr//a/@href')
+result2=tree.xpath('//tr[last()]//a/@href')
+print(result)
+print(result1)
+print(result2)
+
+
+
+
+
+
+
+
+
+
+
+
+

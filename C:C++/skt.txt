@@ -1,0 +1,18 @@
+command line programs
+
+std streams: stdin, stdout, stderr
+
+$ for x in *.c; gcc do -std=c99 -Wall $x -o $x.exe; done
+
+the command line interface
+
+Input:  arguments via argc and argv
+		text/data on stdin
+		environment variables
+Output: text/data n stdout, stderr
+		return codes(Success or Failure)
+
+argc argv
+int argc
+
+#
